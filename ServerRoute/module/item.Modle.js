@@ -1,12 +1,6 @@
-const items=require('../module/item.Modle');
-
-function getItems(req,res){
-    console.log(req.ip);
-    res.status(200).json(items);
-}
-function postItems(req,res){
-    items.push(req.query)
-    res.status(200).send(req.query);
-}
-
-module.exports={getItems, postItems};
+const items=[
+    {name:'iphone',madeBy:'India',series:'13pro'},
+    {name:'nokia',madeBy:'japan',series:'1015'},
+    {name:'redme',madeBy:'rusia',series:'f10'},
+]
+module.exports=items;
