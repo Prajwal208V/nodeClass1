@@ -80,3 +80,83 @@ HTTP response status codes indicate whether a specific HTTP request has been s
 
 400series: This means that the browser or whoever is making that request made that request incorrectly and the server isn't able to respond to it. So we have the 400 by request response, which is just a general catch all error.
 500series:*/
+
+
+***main***
+const express = require('express');
+const cors=require('cors');
+const mainRouter=require('./src/router/index');
+
+const app=express();
+app.use(cors());
+app.use('/api/v1',mainRouter);
+
+const PORT=process.env.PORT || 8080;
+app.listen(PORT,()=>{
+    console.log(`listning on ${PORT} port`);
+})
+
+***index of router***
+const express=require('express');
+const Mainrouter=express.Router();
+
+const itemRouter=require('./item.router');
+const productsRouter=require('./product.router');
+
+Mainrouter.use(itemRouter,productsRouter);
+
+module.exports = Mainrouter;
+
+
+***item***
+const express=require('express');
+const itemRouter=express.Router();
+const itemController=require('../controllers/items.controller');
+
+const items=require('../controllers/items.controller');
+
+itemRouter.route('/items')
+      .get(itemController.getItems)
+      .post(itemController.postItems)
+
+
+module.exports=itemRouter;
+
+***product***
+const express=require('express');
+const productsRouter=express.Router();
+const productsController=require('../controllers/products.controller');
+
+productsRouter.route('/products')
+      .get(productsController.getProducts)
+      .post(productsController.postProducts)
+
+module.exports =productsRouter;
+
+***item controller***
+const items=require('../module/item.Modle');
+
+function getItems(req,res){
+    console.log(req.ip);
+    res.status(200).json(items);
+}
+function postItems(req,res){
+    items.push(req.query)
+    res.status(200).send(req.query);
+}
+
+module.exports={getItems, postItems};
+
+*** products controller ****
+const products=require('../module/products.Modle');
+
+function getProducts(req,res){
+    res.status(200).json(products);
+}
+function postProducts(req,res){
+    products.push(req.query);
+    res.status(200).send(req.query);
+}
+
+module.exports={getProducts, postProducts};
+
